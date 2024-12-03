@@ -23,13 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
+`include "mult.v"
+
 
 module block(inp_north, inp_west, clk, rst, outp_south, outp_east, result);
-	input [31:0] inp_north, inp_west;
-	output reg [31:0] outp_south, outp_east;
+	input [15:0] inp_north, inp_west;
+	output reg [15:0] outp_south, outp_east;
 	input clk, rst;
-	output reg [63:0] result;
-	wire [63:0] multi;
+	output reg [15:0] result;
+	wire [15:0] multi;
 	always @(posedge rst or posedge clk) begin
 		if(rst) begin
 			result <= 0;
@@ -42,5 +44,7 @@ module block(inp_north, inp_west, clk, rst, outp_south, outp_east, result);
 			outp_south <= inp_north;
 		end
 	end
-	assign multi = inp_north*inp_west;
+
+	mult mult_0 (.Operand_1(inp_north),.Operand_2(inp_west),.result(multi));
+
 endmodule
