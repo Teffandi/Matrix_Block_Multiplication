@@ -40,13 +40,3 @@ for row_out in range(0,size_row//4):
 
 print(np.matmul(array_A,array_B))
 
-        #buffer_accumulator = np.zeros((4,4)) #reset accumulator
-           
-
-#        for row_out_buff in range (0,4):
-#            for col_out_buff in range (0,4):
-#                array_C[row*4+row_out_buff,row*4+col_out_buff] = buffer_accumulator[row_out_buff,col_out_buff]
-#        buffer_accumulator = np.zeros((4,4)) #reset accumulator
-    
-
-#print(array_C)
