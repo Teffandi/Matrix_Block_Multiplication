@@ -1,12 +1,13 @@
 import numpy as np
 
 #matrix parameter (note : B will be tranversed)
-size_row = 8
-size_coloumn = 4
+size_row = 512
+size_coloumn = 64
 
 array_A = np.random.randint(1,20,size=(size_row,size_coloumn)) #random array A with size 512 and 64
 array_B = np.random.randint(1,20,size=(size_coloumn,size_row)) #random array B with size 64 and 512
-array_C = np.zeros((size_row//4,size_row//4)) #array multiplication output buffer
+array_C = np.zeros((size_row,size_row)) #array multiplication output buffer
+array_D = np.zeros((size_row,size_row)) #test array
 
 
 buffer_A = np.zeros((4,4)) #buffer for selecting partition block form matrix A
@@ -33,10 +34,14 @@ for row_out in range(0,size_row//4):
 
             buffer_accumulator = np.add(buffer_accumulator,np.matmul(buffer_A,buffer_B))
 
-        print(buffer_accumulator)
+        #print(buffer_accumulator)
+
+        for row_buff in range (0,4):
+            for col_buff in range (0,4):
+                array_C[4*row_out+row_buff,4*col_out+col_buff] = buffer_accumulator[row_buff,col_buff]       
+
         buffer_accumulator = np.zeros((4,4)) #temporary buffer for accumulating 4x4 multplication to produce a singular partition 
 
+array_D = np.matmul(array_A,array_B)
 
-
-print(np.matmul(array_A,array_B))
-
+print(array_C == array_D)
