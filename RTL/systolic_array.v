@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-
 `include "block.v"
 module systolic_array(inp_west0, inp_west4, inp_west8, inp_west12,
 		      inp_north0, inp_north1, inp_north2, inp_north3,

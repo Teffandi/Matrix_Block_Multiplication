@@ -15,7 +15,11 @@ assign mux_reset = counter[3:0];
 always@(posedge clock) begin
 
 if (!reset) begin
-    counter <= (counter >> 1)|(counter<<7); //circular shift magic
+    if(counter == 8'b00001111) begin
+        counter <= 8'b00001111;
+    end else begin
+        counter <= (counter >> 1)|(counter<<7); //circular shift magic
+    end
 end else begin
     counter <= 8'b10000111;
 end
