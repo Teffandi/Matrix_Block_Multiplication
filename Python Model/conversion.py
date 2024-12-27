@@ -1,47 +1,24 @@
-def to_q8_8(value):
+def to_q8_8_hex(number):
     """
-    Convert a floating-point number to Q8.8 fixed-point format.
+    Convert a number into Q8.8 format and return the hexadecimal representation.
     
     Args:
-        value (float): The number to convert.
-    
+        number (float): The input number to be converted.
+        
     Returns:
-        int: The number in Q8.8 format as a 16-bit signed integer.
+        str: Hexadecimal representation of the Q8.8 fixed-point number.
     """
-    if not (-128 <= value < 128):
-        raise ValueError("Value out of range for Q8.8 format (-128 to 127.996).")
+    # Scale the number by 2^8 (256)
+    scaled_value = int(round(number * 256))
     
-    # Multiply by 256 (2^8) and round to the nearest integer
-    fixed_point = round(value * 256)
+    # Ensure the value fits in 16-bit signed range (-32768 to 32767)
+    if scaled_value < -32768 or scaled_value > 32767:
+        raise ValueError(f"Number {number} is out of range for Q8.8 format.")
     
-    # Ensure it's within the 16-bit signed integer range
-    if not (-32768 <= fixed_point <= 32767):
-        raise ValueError("Fixed-point value out of range for 16-bit signed integer.")
+    # Convert to 16-bit signed integer representation
+    if scaled_value < 0:
+        scaled_value = (1 << 16) + scaled_value  # Two's complement for negative numbers
     
-    return fixed_point
-
-
-def from_q8_8(value):
-    """
-    Convert a Q8.8 fixed-point number back to floating-point format.
-    
-    Args:
-        value (int): The Q8.8 fixed-point number.
-    
-    Returns:
-        float: The floating-point representation.
-    """
-    if not (-32768 <= value <= 32767):
-        raise ValueError("Value out of range for 16-bit signed integer.")
-    
-    # Divide by 256 (2^8) to get the floating-point value
-    return value / 256
-
-
-# Example usage
-#float_number = 12.345
-#q8_8_value = to_q8_8(float_number)
-#print(f"Floating-point: {float_number} -> Q8.8: {q8_8_value}")
-
-#converted_back = from_q8_8(q8_8_value)
-#print(f"Q8.8: {q8_8_value} -> Floating-point: {converted_back}")
+    # Convert to hexadecimal
+    hex_value = hex(scaled_value)[2:].zfill(4).upper()  # Remove "0x" and pad to 4 characters
+    return hex_value
