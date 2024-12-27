@@ -75,11 +75,22 @@ initial begin
 reset <= 1;
 clock <= 1;
 #1
-reset <= 0;
+reset <= done;
 end
 
+always @(posedge clock) begin
+
+if(done == 1) begin
+	reset <= 1;
+end else begin
+	reset <= 0;
+end
+
+end
+
+
 initial begin
-	repeat(21)
+	repeat(30)
 		#5 clock <= ~clock;
 end
 
